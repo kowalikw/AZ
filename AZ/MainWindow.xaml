@@ -7,8 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button x:Name="btnOpenFile" Content="Open file" HorizontalAlignment="Left" Margin="180,159,0,0" VerticalAlignment="Top" Width="75" Click="btnOpenFile_Click"/>
-        <Button x:Name="btnSaveFile" Content="Save file" HorizontalAlignment="Left" Margin="226,247,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveFile_Click"/>
+        <Button x:Name="btnOpenFile" Content="Open file" HorizontalAlignment="Left" Margin="226,10,0,0" VerticalAlignment="Top" Width="75" Click="btnOpenFile_Click"/>
+        <Button x:Name="btnSaveFile" Content="Save file" HorizontalAlignment="Left" Margin="226,34,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveFile_Click"/>
+        <TextBox x:Name="listOfPairs" HorizontalAlignment="Left" Height="159" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="166"/>
+        <TextBox x:Name="resultSchedule" HorizontalAlignment="Left" Height="159" Margin="350,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="158"/>
 
     </Grid>
 </Window>

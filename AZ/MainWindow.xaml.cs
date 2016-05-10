@@ -1,5 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using ASD.Graphs;
+using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace AZ
@@ -9,6 +11,8 @@ namespace AZ
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Graph mainGraph;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -21,7 +25,16 @@ namespace AZ
             {
                 try
                 {
-                    FileHelper.LoadFile(openFileDialog.FileName);
+                    mainGraph = FileHelper.LoadFile(openFileDialog.FileName);
+
+                    List<Tuple<int, int>> associations;
+
+                    var line = mainGraph.LineGraph(out associations);
+
+                    //GraphExport ge = new GraphExport();
+                    //ge.Export(mainGraph);
+                    //ge.Export(mainGraph.ComplementGraph());
+                    //ge.Export(line);
                 }
                 catch(Exception)
                 {

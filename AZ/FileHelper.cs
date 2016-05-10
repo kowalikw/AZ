@@ -3,8 +3,16 @@ using System.IO;
 
 namespace AZ
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class FileHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static Graph LoadFile(string path)
         {
             Graph graph;
@@ -18,14 +26,19 @@ namespace AZ
                 while ((line = file.ReadLine()) != null)
                 {
                     var persons = line.Split(',');
-                    graph.AddEdge(int.Parse(persons[0]), int.Parse(persons[1]), 1);
+                    graph.AddEdge(int.Parse(persons[0]), int.Parse(persons[1]));
                 }
             }
 
             return graph;
         }
 
-        public static void SaveFile()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="path"></param>
+        public static void SaveFile(Graph graph, string path)
         {
 
         }
