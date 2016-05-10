@@ -1,5 +1,4 @@
 ﻿using ASD.Graphs;
-using System;
 using System.Collections.Generic;
 
 namespace AZ
@@ -15,9 +14,9 @@ namespace AZ
         /// <param name="graph">Source graph.</param>
         /// <param name="associations">Out list of vertices and new edged associations.</param>
         /// <returns>Line graph.</returns>
-        public static Graph LineGraph(this Graph graph, out List<Tuple<int, int>> associations)
+        public static Graph LineGraph(this Graph graph, out List<Edge> associations)
         {
-            associations = new List<Tuple<int, int>>();
+            associations = new List<Edge>();
             Graph lineGraph = new AdjacencyMatrixGraph(false, graph.EdgesCount);
 
             // generates associations between old graph edges and new graph vertices
@@ -28,11 +27,11 @@ namespace AZ
                     bool canAdd = true;
 
                     for (int i = 0; i < associations.Count; i++)
-                        if (associations[i].Item1 == e.To && associations[i].Item2 == e.From)
+                        if (associations[i].From == e.To && associations[i].To == e.From)
                             canAdd = false;
 
                     if(canAdd)
-                        associations.Add(new Tuple<int, int>(e.From, e.To));
+                        associations.Add(new Edge(e.From, e.To));
                 }
             }
 
@@ -47,11 +46,11 @@ namespace AZ
 
                         for (int i = 0; i < associations.Count; i++)
                         {
-                            if (associations[i].Item1 == e.From && associations[i].Item2 == e.To ||
-                                associations[i].Item1 == e.To && associations[i].Item2 == e.From)
+                            if (associations[i].From == e.From && associations[i].To == e.To ||
+                                associations[i].From == e.To && associations[i].To == e.From)
                                 v1 = i;
-                            if (associations[i].Item1 == eNext.From && associations[i].Item2 == eNext.To ||
-                                associations[i].Item1 == eNext.To && associations[i].Item2 == eNext.From)
+                            if (associations[i].From == eNext.From && associations[i].To == eNext.To ||
+                                associations[i].From == eNext.To && associations[i].To == eNext.From)
                                 v2 = i;
                         }
 
@@ -88,9 +87,25 @@ namespace AZ
             return complementGraph;
         }
 
-        public static void Matching(this Graph graph)
+        // Mock-up algorytmu.
+        /// <summary>
+        /// Finds macimum matching in source graph.
+        /// </summary>
+        /// <param name="graph">Source graph.</param>
+        /// <returns>Maximum graph matching.</returns>
+        public static List<Edge> MaxMatching(this Graph graph)
         {
+            List<Edge> matching = new List<Edge>();
 
+            for(int v = 0; v < graph.VerticesCount; v++)
+            {
+                foreach(Edge e in graph.OutEdges(v))
+                {
+                    matching.Add(e);
+                }
+            }
+
+            return matching;
         }
     }
 }

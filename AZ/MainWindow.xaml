@@ -11,7 +11,7 @@
         <Button x:Name="btnSaveFile" Content="Zapisz plik" HorizontalAlignment="Left" Margin="247,163,0,0" VerticalAlignment="Top" Width="100" Click="btnSaveFile_Click" Height="27"/>
         <TextBox x:Name="listOfPairs" HorizontalAlignment="Left" Height="204" Margin="10,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
         <TextBox x:Name="resultSchedule" HorizontalAlignment="Left" Height="204" Margin="414,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
-        <Button x:Name="btnFindSchedule" Content="Znajdź optymalny rozkład" HorizontalAlignment="Left" Margin="222,202,0,0" VerticalAlignment="Top" Width="150" Height="28"/>
+        <Button x:Name="btnFindSchedule" Content="Znajdź optymalny rozkład" HorizontalAlignment="Left" Margin="222,202,0,0" VerticalAlignment="Top" Width="150" Height="28" Click="btnFindSchedule_Click"/>
         <Label x:Name="label" Content="Algorytmy Zaawansowane - Projekt" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Width="574" HorizontalContentAlignment="Center"/>
         <Label x:Name="label1" Content="Wyznaczanie optymalnego rozkładu kursowania kajaków" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" FontSize="13" Width="574" HorizontalContentAlignment="Center"/>
         <Label x:Name="label2" Content="Autorzy:" HorizontalAlignment="Left" Margin="180,58,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="11"/>
@@ -20,7 +20,7 @@
         <Label x:Name="label5" Content="Optymalny rozkład kursów:" HorizontalAlignment="Left" Margin="415,81,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <Label x:Name="label6" Content="Liczba wczytanych par:" HorizontalAlignment="Left" Margin="229,240,0,0" VerticalAlignment="Top" FontSize="11" FontWeight="Bold"/>
         <Label x:Name="label7" Content="Łączna liczba kursów:" HorizontalAlignment="Left" Margin="234,261,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="11" RenderTransformOrigin="0.018,-0.3"/>
-        <Label x:Name="label8" Content="0" HorizontalAlignment="Left" Margin="350,240,0,0" VerticalAlignment="Top" FontSize="11" Width="38"/>
-        <Label x:Name="label9" Content="0" HorizontalAlignment="Left" Margin="348,261,0,0" VerticalAlignment="Top" FontSize="11" Width="40"/>
+        <Label x:Name="labelPairsCount" Content="0" HorizontalAlignment="Left" Margin="350,240,0,0" VerticalAlignment="Top" FontSize="11" Width="38"/>
+        <Label x:Name="labelCoursesCount" Content="0" HorizontalAlignment="Left" Margin="348,261,0,0" VerticalAlignment="Top" FontSize="11" Width="40"/>
     </Grid>
 </Window>

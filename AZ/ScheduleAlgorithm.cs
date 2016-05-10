@@ -1,0 +1,41 @@
+﻿using ASD.Graphs;
+using System;
+using System.Collections.Generic;
+
+namespace AZ
+{
+    /// <summary>
+    /// Algorithm for calculating optimal kayaking schedule.
+    /// </summary>
+    public static class ScheduleAlgorithm
+    {
+        /// <summary>
+        /// Calculates optimal kayaking schedule for people pairs.
+        /// </summary>
+        /// <param name="graph">Source graph of people pairs.</param>
+        /// <returns>Returns optimal schedule.</returns>
+        public static List<Tuple<Edge, Edge>> FindSchedule(Graph graph)
+        {
+            List<Edge> association;
+            List<Tuple<Edge, Edge>> schedule = new List<Tuple<Edge, Edge>>();
+
+            var lineGraph = graph.LineGraph(out association);
+            var complementGraph = lineGraph.ComplementGraph();
+            var maxMatching = complementGraph.MaxMatching();
+
+            bool[] extractedEdges = new bool[complementGraph.VerticesCount];
+            foreach(var item in maxMatching)
+            {
+                extractedEdges[item.From] = true;
+                extractedEdges[item.To] = true;
+                schedule.Add(new Tuple<Edge, Edge>(association[item.From], association[item.To]));
+            }
+
+            for(int i = 0; i < extractedEdges.Length; i++)
+                if(!extractedEdges[i])
+                    schedule.Add(new Tuple<Edge, Edge>(association[i], new Edge(-1, -1)));
+
+            return schedule;
+        }
+    }
+}

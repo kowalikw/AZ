@@ -26,26 +26,53 @@ namespace AZ
                 try
                 {
                     mainGraph = FileHelper.LoadFile(openFileDialog.FileName);
+                    bool[,] addedPairs = new bool[mainGraph.VerticesCount, mainGraph.VerticesCount];
 
-                    List<Tuple<int, int>> associations;
+                    listOfPairs.Text = "";
+                    for (int v = 0; v < mainGraph.VerticesCount; v++)
+                    {
+                        foreach(Edge edge in mainGraph.OutEdges(v))
+                        {
+                            if (!addedPairs[edge.From, edge.To])
+                            {
+                                listOfPairs.Text += edge.From.ToString() + ", " + edge.To.ToString() + "\n";
+                                addedPairs[edge.From, edge.To] = true;
+                                addedPairs[edge.To, edge.From] = true;
+                            }
+                        }
+                    }
 
-                    var line = mainGraph.LineGraph(out associations);
-
-                    //GraphExport ge = new GraphExport();
-                    //ge.Export(mainGraph);
-                    //ge.Export(mainGraph.ComplementGraph());
-                    //ge.Export(line);
+                    labelPairsCount.Content = mainGraph.VerticesCount.ToString();
                 }
                 catch(Exception)
                 {
-                    MessageBox.Show("");
+                    MessageBox.Show("Nieprawidłowy format pliku! Spróbuj wczytać inny plik.", "Wystąpił błąd!");
                 }
             }
         }
 
         private void btnSaveFile_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                FileHelper.SaveFile(resultSchedule.Text, saveFileDialog.FileName);
+            }
+        }
 
+        private void btnFindSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            var schedule = ScheduleAlgorithm.FindSchedule(mainGraph);
+
+            resultSchedule.Text = "";
+            foreach(var item in schedule)
+            {
+                if(item.Item2.From != -1 && item.Item2.To != -1)
+                    resultSchedule.Text += item.Item1.From + "," + item.Item1.To +  " " + item.Item2.From + "," + item.Item2.To + "\n";
+                else
+                    resultSchedule.Text += item.Item1.From + "," + item.Item1.To + "\n";
+            }
         }
     }
 }
