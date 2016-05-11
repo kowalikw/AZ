@@ -17,11 +17,12 @@ namespace AZ
         public static List<Tuple<Edge, Edge>> FindSchedule(Graph graph)
         {
             List<Edge> association;
+            List<Edge> M = new List<Edge>();
             List<Tuple<Edge, Edge>> schedule = new List<Tuple<Edge, Edge>>();
 
             var lineGraph = graph.LineGraph(out association);
             var complementGraph = lineGraph.ComplementGraph();
-            var maxMatching = complementGraph.MaxMatching();
+            var maxMatching = complementGraph.FindMaximumMatching(M);
 
             bool[] extractedEdges = new bool[complementGraph.VerticesCount];
             foreach(var item in maxMatching)

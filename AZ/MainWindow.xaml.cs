@@ -1,7 +1,6 @@
 ﻿using ASD.Graphs;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace AZ
@@ -42,7 +41,7 @@ namespace AZ
                         }
                     }
 
-                    labelPairsCount.Content = mainGraph.VerticesCount.ToString();
+                    labelPairsCount.Content = mainGraph.EdgesCount.ToString();
                 }
                 catch(Exception)
                 {
