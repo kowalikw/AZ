@@ -185,6 +185,13 @@ namespace AZ
                             else
                             {
                                 // TODO: ŚCIĄGANIE CYKLI
+
+                                int lala = 0;
+
+                                GraphExport ex = new GraphExport();
+                                ex.Export(F);
+
+
                             }
                         }
                     }
@@ -258,7 +265,13 @@ namespace AZ
         private static void AugmentMatchingAlongPath(ref List<Edge> M, List<Edge> path)
         {
             foreach (Edge e in path)
-                M.Remove(e);
+            {
+                Edge e1 = new Edge(e.From, e.To);
+                Edge e2 = new Edge(e.To, e.From);
+
+                M.Remove(e1);
+                M.Remove(e2);
+            }
 
             for (int i = 0; i < path.Count; i += 2)
                 M.Add(path[i]);
