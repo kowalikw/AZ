@@ -184,7 +184,7 @@ namespace AZ
                             }
                             else
                             {
-                                List<int> cycle = new List<int>();
+                               List<int> cycle = new List<int>();
                                 Edge[] path;
                                 F.AStar(v, w, out path);
 
@@ -241,9 +241,6 @@ namespace AZ
                                     if (!MPrim.Contains(e1) && !MPrim.Contains(e2))
                                         MPrim.Add(new Edge(from, to));
                                 }
-
-                                GraphExport ge = new GraphExport();
-                                ge.Export(graphPrim);
 
                                 List<Edge> pathPrim = FindAugmentingPath(graphPrim, MPrim);
                                 List<Edge> augmentingPath = new List<Edge>();

@@ -27,9 +27,13 @@ namespace AZ
             bool[] extractedEdges = new bool[complementGraph.VerticesCount];
             foreach(var item in maxMatching)
             {
-                extractedEdges[item.From] = true;
-                extractedEdges[item.To] = true;
-                schedule.Add(new Tuple<Edge, Edge>(association[item.From], association[item.To]));
+                if(!(association[item.From].From == association[item.To].From || association[item.From].From == association[item.To].To || association[item.From].To == association[item.To].From || association[item.From].To == association[item.To].To))
+                {
+                    extractedEdges[item.From] = true;
+                    extractedEdges[item.To] = true;
+
+                    schedule.Add(new Tuple<Edge, Edge>(association[item.From], association[item.To]));
+                }
             }
 
             for(int i = 0; i < extractedEdges.Length; i++)
