@@ -184,14 +184,162 @@ namespace AZ
                             }
                             else
                             {
-                                // TODO: ŚCIĄGANIE CYKLI
+                                List<int> cycle = new List<int>();
+                                Edge[] path;
+                                F.AStar(v, w, out path);
 
-                                int lala = 0;
+                                foreach (var edge in path)
+                                    cycle.Add(edge.From);
+                                cycle.Add(w);
 
-                                GraphExport ex = new GraphExport();
-                                ex.Export(F);
+                                int cycleRoot = -1;
+                                foreach (var i in cycle)
+                                {
+                                    if (rootsF[i])
+                                    {
+                                        cycleRoot = i;
+                                        break;
+                                    }
+                                }
 
+                                int vertexNumber = 1;
+                                int[] association = new int[F.VerticesCount];
+                                for(int i = 0; i < F.VerticesCount; i++)
+                                {
+                                    if (cycle.Contains(i))
+                                        association[i] = 0;
+                                    else
+                                        association[i] = vertexNumber++;
+                                }
 
+                                Graph graphPrim = new AdjacencyMatrixGraph(false, F.VerticesCount - cycle.Count + 1);
+                                for(int i = 0; i < association.Length; i++)
+                                {
+                                    foreach(var edge in graph.OutEdges(i))
+                                    {
+                                        int from = association[edge.From];
+                                        int to = association[edge.To];
+
+                                        if (graphPrim.GetEdgeWeight(from, to) == null && graphPrim.GetEdgeWeight(to, from) == null && from != to)
+                                            graphPrim.AddEdge(from, to);
+                                    }
+                                }
+
+                                List<Edge> MPrim = new List<Edge>();
+
+                                foreach(var edge in M)
+                                {
+                                    if (association[edge.From] == association[edge.To])
+                                        continue;
+
+                                    int from = association[edge.From];
+                                    int to = association[edge.To];
+
+                                    Edge e1 = new Edge(from, to);
+                                    Edge e2 = new Edge(to, from);
+
+                                    if (!MPrim.Contains(e1) && !MPrim.Contains(e2))
+                                        MPrim.Add(new Edge(from, to));
+                                }
+
+                                GraphExport ge = new GraphExport();
+                                ge.Export(graphPrim);
+
+                                List<Edge> pathPrim = FindAugmentingPath(graphPrim, MPrim);
+                                List<Edge> augmentingPath = new List<Edge>();
+
+                                // Rozciąganie ścieżki poniżej
+
+                                if (pathPrim != null)
+                                {
+                                    foreach (var edge in pathPrim)
+                                    {
+                                        // cykl w środku
+                                        if (edge.From != 0 && edge.To != 0)
+                                        {
+                                            int from = -1;
+                                            int to = -1;
+
+                                            for (int i = 0; i < association.Length; i++)
+                                            {
+                                                if (association[i] == edge.From)
+                                                    from = i;
+                                                if (association[i] == edge.To)
+                                                    to = i;
+
+                                                augmentingPath.Add(new Edge(from, to));
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            int x = -1;
+                                            int y = -1;
+                                            int z = -1;
+
+                                            if (edge.From == 0)
+                                            {
+                                                for (int i = 0; i < association.Length; i++)
+                                                    if (association[i] == edge.To)
+                                                        z = i;
+                                            }
+                                            else if (edge.To == 0)
+                                            {
+                                                for (int i = 0; i < association.Length; i++)
+                                                    if (association[i] == edge.From)
+                                                        z = i;
+                                            }
+
+                                            foreach (var vertex in cycle) // find exposed vertex from cycle
+                                            {
+                                                if (IsExposedVertex(vertex, M))
+                                                {
+                                                    x = vertex;
+                                                    y = vertex;
+                                                    break;
+                                                }
+                                            }
+
+                                            bool vertexFound = false;
+                                            foreach (var vertex in cycle) // znaleźć index w cycle który należy do M i nie sąsiaduje z x i sąsiaduje z "z"
+                                            {
+                                                if (!IsExposedVertex(vertex, M) && graph.GetEdgeWeight(vertex, z) != null && graph.GetEdgeWeight(vertex, x) == null)
+                                                {
+                                                    vertexFound = true;
+                                                    y = vertex;
+                                                    break;
+                                                }
+                                            }
+
+                                            /*if(y == -1 || y == x)
+                                            {
+                                                foreach (var vertex in cycle)
+                                                {
+                                                    if (!IsExposedVertex(vertex, M) && graph.GetEdgeWeight(vertex, z) != null)
+                                                    {
+                                                        vertexFound = true;
+                                                        y = vertex;
+                                                        break;
+                                                    }
+                                                }
+                                            }*/
+
+                                            augmentingPath.Add(new Edge(z, y));
+
+                                            Edge[] tempPath = null;
+                                            if (vertexFound)
+                                            {
+                                                graph.AStar(y, x, out tempPath);
+
+                                                foreach (var tempEdge in tempPath)
+                                                    augmentingPath.Add(tempEdge);
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                                return augmentingPath;
                             }
                         }
                     }

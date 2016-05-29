@@ -41,6 +41,7 @@ namespace AZ
                         }
                     }
 
+                    labelCoursesCount.Content = 0;
                     labelPairsCount.Content = mainGraph.EdgesCount.ToString();
                 }
                 catch(Exception)
@@ -72,6 +73,8 @@ namespace AZ
                 else
                     resultSchedule.Text += item.Item1.From + "," + item.Item1.To + "\n";
             }
+
+            labelCoursesCount.Content = schedule.Count.ToString();
         }
     }
 }
