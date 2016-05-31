@@ -1,5 +1,4 @@
-﻿using System;
-using ASD.Graphs;
+﻿using ASD.Graphs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AZ;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 namespace AZ_Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class GraphHelperTests
     {
         [TestMethod]
         public void FileReaderTest()
@@ -30,7 +29,6 @@ namespace AZ_Tests
             Assert.IsTrue(lst.Contains(new Edge(2, 3)));
         }
 
-
         [TestMethod]
         public void LineGraphTest()
         {
@@ -41,12 +39,10 @@ namespace AZ_Tests
             Assert.AreEqual(7, k.VerticesCount);
         }
 
-
         [TestMethod]
         public void ComplementGraphTest()
         {
             Graph g = FileHelper.LoadFile("test.txt");
-
             Graph k = GraphHelper.ComplementGraph(g);
 
             List<Edge> lst = new List<Edge>();
@@ -59,16 +55,15 @@ namespace AZ_Tests
             Assert.AreEqual(3, k.EdgesCount);
         }
 
-
         [TestMethod]
         public void FindMaximumMatchingTest()
         {
             Graph g = FileHelper.LoadFile("test.txt");
-            List<Edge> lst, lst1 = new List<Edge>();
-            Graph k = GraphHelper.LineGraph(g, out lst);
+            List<Edge> M, M1 = new List<Edge>();
+            Graph k = GraphHelper.LineGraph(g, out M);
             k = GraphHelper.ComplementGraph(k);
-            lst = GraphHelper.FindMaximumMatching(k, lst1);
-            Assert.AreEqual(lst.Count, (int)(k.VerticesCount/2));
+            M = GraphHelper.FindMaximumMatching(k, M1);
+            Assert.AreEqual(M.Count, (int)(k.VerticesCount/2));
         }
     }
 }

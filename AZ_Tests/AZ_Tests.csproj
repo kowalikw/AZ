@@ -53,8 +53,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="FileHelperTests.cs" />
+    <Compile Include="GraphHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduleAlgorithTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AZ\AZ.csproj">
