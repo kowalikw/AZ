@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="Graph">
       <HintPath>..\..\..\..\Desktop\Graph.dll</HintPath>
+      <Aliases>global</Aliases>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
