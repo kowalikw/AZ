@@ -22,6 +22,10 @@ namespace AZ
 
             var lineGraph = graph.LineGraph(out association);
             var complementGraph = lineGraph.ComplementGraph();
+
+            //GraphExport ge = new GraphExport();
+            //ge.Export(complementGraph);
+
             var maxMatching = complementGraph.FindMaximumMatching(M);
 
             bool[] extractedEdges = new bool[complementGraph.VerticesCount];

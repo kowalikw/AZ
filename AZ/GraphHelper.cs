@@ -1,5 +1,6 @@
 ﻿using ASD.Graphs;
 using System.Collections.Generic;
+using System;
 
 namespace AZ
 {
@@ -96,7 +97,7 @@ namespace AZ
         public static List<Edge> FindMaximumMatching(this Graph graph, List<Edge> M)
         {
             var P = FindAugmentingPath(graph, M);
-            if (P != null)
+            if (P != null && P.Count > 0)
             {
                 AugmentMatchingAlongPath(ref M, P);
 
@@ -132,7 +133,7 @@ namespace AZ
                 while(IsUnmarkedEdge(graph, markedEdges, v, out e))
                 {
                     int w = e.To;
-                    if(!insideF[w])
+                    if(!insideF[w]) // w nie jest w lesie
                     {
                         int x = -1;
                         foreach (Edge matchedEdge in M)
@@ -148,11 +149,8 @@ namespace AZ
                         insideF[v] = true;
                         insideF[w] = true;
                         insideF[x] = true;
-                        rootsF[v] = true;
-                        rootsF[w] = false;
-                        rootsF[x] = false;
                     }
-                    else
+                    else // jest w lesie
                     {
                         Edge[] distance;
                         F.AStar(w, RootOfVertexInTree(F, rootsF, w), out distance);
@@ -184,7 +182,7 @@ namespace AZ
                             }
                             else
                             {
-                               List<int> cycle = new List<int>();
+                                List<int> cycle = new List<int>();
                                 Edge[] path;
                                 F.AStar(v, w, out path);
 
@@ -242,17 +240,18 @@ namespace AZ
                                         MPrim.Add(new Edge(from, to));
                                 }
 
+                                // 0 = blossom (cykl zwinięty ma indeks 0)
                                 List<Edge> pathPrim = FindAugmentingPath(graphPrim, MPrim);
                                 List<Edge> augmentingPath = new List<Edge>();
 
                                 // Rozciąganie ścieżki poniżej
 
-                                if (pathPrim != null)
+                                if (pathPrim != null && pathPrim.Count > 0)
                                 {
                                     foreach (var edge in pathPrim)
                                     {
                                         // cykl w środku
-                                        if (edge.From != 0 && edge.To != 0)
+                                        if (edge.From != 0 && edge.To != 0) // TODO
                                         {
                                             int from = -1;
                                             int to = -1;
@@ -267,11 +266,10 @@ namespace AZ
                                                 augmentingPath.Add(new Edge(from, to));
                                             }
                                         }
-                                        else
+                                        else // cykl jest jednym z końców
                                         {
 
                                             int x = -1;
-                                            int y = -1;
                                             int z = -1;
 
                                             if (edge.From == 0)
@@ -292,46 +290,42 @@ namespace AZ
                                                 if (IsExposedVertex(vertex, M))
                                                 {
                                                     x = vertex;
-                                                    y = vertex;
                                                     break;
                                                 }
                                             }
 
-                                            bool vertexFound = false;
-                                            foreach (var vertex in cycle) // znaleźć index w cycle który należy do M i nie sąsiaduje z x i sąsiaduje z "z"
-                                            {
-                                                if (!IsExposedVertex(vertex, M) && graph.GetEdgeWeight(vertex, z) != null && graph.GetEdgeWeight(vertex, x) == null)
-                                                {
-                                                    vertexFound = true;
-                                                    y = vertex;
-                                                    break;
-                                                }
-                                            }
+                                            // zawsze istnieje exposed vertex w cyklu
 
-                                            /*if(y == -1 || y == x)
+                                            if(graph.GetEdgeWeight(z, x) != null) // exposed vertex bezpośrednio sąsiaduje
                                             {
-                                                foreach (var vertex in cycle)
-                                                {
-                                                    if (!IsExposedVertex(vertex, M) && graph.GetEdgeWeight(vertex, z) != null)
-                                                    {
-                                                        vertexFound = true;
-                                                        y = vertex;
+                                                augmentingPath.Add(new Edge(z, x));
+                                            }
+                                            else // konieczność przejścia przez krawędź z M
+                                            {
+                                                int i = 0;
+                                                for (i = 0; i < cycle.Count; i++) // wyszukanie sąsiedniego wierzchołka do "z"
+                                                    if (graph.GetEdgeWeight(z, cycle[i]) != null)
                                                         break;
+
+                                                augmentingPath.Add(new Edge(z, cycle[i]));
+
+                                                if(M.Contains(new Edge(cycle[i], cycle[(i+1) % cycle.Count])) || M.Contains(new Edge(cycle[(i + 1) % cycle.Count], cycle[i]))) //++
+                                                {
+                                                    while(cycle[i % cycle.Count] != x)
+                                                    {
+                                                        augmentingPath.Add(new Edge(cycle[i % cycle.Count], cycle[(i + 1) % cycle.Count]));
+                                                        i++;
                                                     }
                                                 }
-                                            }*/
-
-                                            augmentingPath.Add(new Edge(z, y));
-
-                                            Edge[] tempPath = null;
-                                            if (vertexFound)
-                                            {
-                                                graph.AStar(y, x, out tempPath);
-
-                                                foreach (var tempEdge in tempPath)
-                                                    augmentingPath.Add(tempEdge);
+                                                else //--
+                                                {
+                                                    while (cycle[(i + cycle.Count) % cycle.Count] != x)
+                                                    {
+                                                        augmentingPath.Add(new Edge(cycle[(i + cycle.Count) % cycle.Count], cycle[((i - 1) + cycle.Count) % cycle.Count]));
+                                                        i--;
+                                                    }
+                                                }
                                             }
-
                                         }
                                     }
                                 }
