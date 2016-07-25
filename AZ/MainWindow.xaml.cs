@@ -63,6 +63,12 @@ namespace AZ
 
         private void btnFindSchedule_Click(object sender, RoutedEventArgs e)
         {
+            if (mainGraph == null)
+            {
+                MessageBox.Show("Aby wyznaczyć rozkład jazdy należy wczytać plik z danymi.", "Wystąpił błąd!");
+                return;
+            }
+
             var schedule = ScheduleAlgorithm.FindSchedule(mainGraph);
 
             resultSchedule.Text = "";

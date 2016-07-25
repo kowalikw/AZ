@@ -240,6 +240,9 @@ namespace AZ
                                         MPrim.Add(new Edge(from, to));
                                 }
 
+                                //GraphExport ge = new GraphExport();
+                                //ge.Export(graphPrim);
+
                                 // 0 = blossom (cykl zwinięty ma indeks 0)
                                 List<Edge> pathPrim = FindAugmentingPath(graphPrim, MPrim);
                                 List<Edge> augmentingPath = new List<Edge>();
@@ -251,7 +254,7 @@ namespace AZ
                                     foreach (var edge in pathPrim)
                                     {
                                         // cykl w środku
-                                        if (edge.From != 0 && edge.To != 0) // TODO
+                                        if (edge.From != 0 && edge.To != 0) // TODO: jakaś krawędź skojarzona musi być na ścieżce rozciągniętej!
                                         {
                                             int from = -1;
                                             int to = -1;
@@ -261,10 +264,9 @@ namespace AZ
                                                 if (association[i] == edge.From)
                                                     from = i;
                                                 if (association[i] == edge.To)
-                                                    to = i;
-
-                                                augmentingPath.Add(new Edge(from, to));
+                                                    to = i;  
                                             }
+                                            augmentingPath.Add(new Edge(from, to));
                                         }
                                         else // cykl jest jednym z końców
                                         {
@@ -285,14 +287,16 @@ namespace AZ
                                                         z = i;
                                             }
 
-                                            foreach (var vertex in cycle) // find exposed vertex from cycle
+                                            /*foreach (var vertex in cycle) // find exposed vertex from cycle
                                             {
                                                 if (IsExposedVertex(vertex, M))
                                                 {
                                                     x = vertex;
                                                     break;
                                                 }
-                                            }
+                                            }*/
+
+                                            x = cycle[0]; // exposed i root cyklu
 
                                             // zawsze istnieje exposed vertex w cyklu
 
