@@ -240,9 +240,6 @@ namespace AZ
                                         MPrim.Add(new Edge(from, to));
                                 }
 
-                                //GraphExport ge = new GraphExport();
-                                //ge.Export(graphPrim);
-
                                 // 0 = blossom (cykl zwinięty ma indeks 0)
                                 List<Edge> pathPrim = FindAugmentingPath(graphPrim, MPrim);
                                 List<Edge> augmentingPath = new List<Edge>();
@@ -287,20 +284,9 @@ namespace AZ
                                                         z = i;
                                             }
 
-                                            /*foreach (var vertex in cycle) // find exposed vertex from cycle
-                                            {
-                                                if (IsExposedVertex(vertex, M))
-                                                {
-                                                    x = vertex;
-                                                    break;
-                                                }
-                                            }*/
+                                            x = cycle[0]; // exposed i root cyklu, zawsze istnieje exposed vertex w cyklu
 
-                                            x = cycle[0]; // exposed i root cyklu
-
-                                            // zawsze istnieje exposed vertex w cyklu
-
-                                            if(graph.GetEdgeWeight(z, x) != null) // exposed vertex bezpośrednio sąsiaduje
+                                            if (graph.GetEdgeWeight(z, x) != null) // exposed vertex bezpośrednio sąsiaduje
                                             {
                                                 augmentingPath.Add(new Edge(z, x));
                                             }
