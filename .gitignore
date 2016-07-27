@@ -5,3 +5,8 @@
 /AZ/bin/Debug
 /AZ/obj/Debug
 /AZ_Tests/obj/Debug
+/AZ/bin/Release
+/AZ/obj/Release
+/AZ_Tests/obj/Release
+/AZ_Tests/bin/Release
+/AZ_Tests/Resources

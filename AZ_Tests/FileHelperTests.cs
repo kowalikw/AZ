@@ -9,9 +9,16 @@ namespace AZ_Tests
     public class FileHelperTests
     {
         [TestMethod]
-        public void FileReaderTest()
+        [ExpectedException(typeof(System.FormatException))]
+        public void OpenFileExceptionTest()
         {
-            Graph g = FileHelper.LoadFile("Resources\\test.txt");
+            FileHelper.LoadFile("Resources\\test0.txt");
+        }
+
+        [TestMethod]
+        public void OpenFileTest()
+        {
+            Graph g = FileHelper.LoadFile("Resources\\test1.txt");
 
             Assert.AreEqual(g.VerticesCount, 5);
             Assert.AreEqual(g.EdgesCount, 7);
@@ -32,9 +39,9 @@ namespace AZ_Tests
         [TestMethod]
         public void SaveFileTest()
         {
-            FileHelper.SaveFile("Some random content", "tst.txt");
-            if (System.IO.File.Exists("tst.txt"))
-                System.IO.File.Delete("tst.txt");
+            FileHelper.SaveFile("Some random content", "test_output.txt");
+            if (System.IO.File.Exists("test_output.txt"))
+                System.IO.File.Delete("test_output.txt");
         }
     }
 }

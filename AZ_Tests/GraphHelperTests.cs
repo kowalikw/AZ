@@ -8,11 +8,10 @@ namespace AZ_Tests
     [TestClass]
     public class GraphHelperTests
     {
-
         [TestMethod]
         public void LineGraphTest()
         {
-            Graph g = FileHelper.LoadFile("Resources\\test.txt");
+            Graph g = FileHelper.LoadFile("Resources\\test1.txt");
             List<Edge> lst;
             Graph k = GraphHelper.LineGraph(g, out lst);
             Assert.AreEqual(14, k.EdgesCount);
@@ -22,7 +21,7 @@ namespace AZ_Tests
         [TestMethod]
         public void ComplementGraphTest()
         {
-            Graph g = FileHelper.LoadFile("Resources\\test.txt");
+            Graph g = FileHelper.LoadFile("Resources\\test1.txt");
             Graph k = GraphHelper.ComplementGraph(g);
 
             List<Edge> lst = new List<Edge>();
@@ -38,7 +37,7 @@ namespace AZ_Tests
         [TestMethod]
         public void FindMaximumMatchingTest()
         {
-            Graph g = FileHelper.LoadFile("Resources\\test.txt");
+            Graph g = FileHelper.LoadFile("Resources\\test1.txt");
             List<Edge> M, M1 = new List<Edge>();
             Graph k = GraphHelper.LineGraph(g, out M);
             k = GraphHelper.ComplementGraph(k);
